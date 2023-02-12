@@ -35,8 +35,9 @@ redEdges[i].length == blueEdges[j].length == 2
 
 #include<iostream>
 #include<vector>
+#include<queue>
 using namespace std;
-
+/*
 class Solution {
 public:
     vector<int> shortestAlternatingPaths(int n, vector<vector<int>>& redEdges, vector<vector<int>>& blueEdges) {
@@ -90,3 +91,4 @@ public:
         return ans;
     }
 };
+*/
