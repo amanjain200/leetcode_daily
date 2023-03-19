@@ -1,44 +1,44 @@
 /*
-Distinct Difference
-EasyAccuracy: 70.95%Submissions: 10K+Points: 2
-Register NOW for the latest GFG Job-a-thon: Hiring Challenge !!  
+211. Design Add and Search Words Data Structure
+Medium
+6.4K
+364
+Companies
+Design a data structure that supports adding new words and finding if a string matches any previously added string.
 
-Given an array A[] of length N. For each index i (1<=i<=N), find the diffference between the number of distinct element in it's left and right side in the array. 
+Implement the WordDictionary class:
 
-Example 1:
+WordDictionary() Initializes the object.
+void addWord(word) Adds word to the data structure, it can be matched later.
+bool search(word) Returns true if there is any string in the data structure that matches word or false otherwise. word may contain dots '.' where dots can be matched with any letter.
+ 
 
-Input:
-N = 3
-arr[] = {4, 3, 3}
-Output: {-1, 0, 2}
-Explanation: For index i=1, there are 0 distinct element in the left side of it, and 1 distinct element(3) in it's right side. So difference is 0-1 = -1. 
+Example:
 
-Similarly for index i=2, there is 1 distinct element (4) in left side of it, and 1 distinct element(3) in it's right side. So difference is 1-1 = 0.
+Input
+["WordDictionary","addWord","addWord","addWord","search","search","search","search"]
+[[],["bad"],["dad"],["mad"],["pad"],["bad"],[".ad"],["b.."]]
+Output
+[null,null,null,null,false,true,true,true]
 
-Similarly for index i=3, there are 2 distinct elements (4 and 3) in left side of it, and 0 distinct elements in it's left side. So difference is 2-0 = 2.
-
-Example 2:
-
-Input:
-N = 4
-arr[] = {4, 4, 3, 3}
-Output: {-2, 0, 0, 2}
-Explanation: For index i=1, there are 0 distinct element in the left side of it, and 2 distinct element(4 and 3) in it's right side. So difference is 0-2 = -2.
-
-Similarly for index i=2, there is 1 distinct element (4) in left side of it, and 1 distinct element(3) in it's right side. So difference is 1-1 = 0.
-
-Similarly for index i=4, there are 2 distinct elements (4 and 3) in left side of it, and 0 distinct element in it's right side. So difference is 2-0 = 2.
-Your Task: 
-You don't need to read input or print anything. Your task is to complete the function getDistinctDifference() which takes the array A[] and its size N as input parameters and returns an array containing the difference between number of ditinct elements in left and right side for each 1<=i<=N.
-
-Expected Time Complexity: O(N)
-Expected Space Complexity:O(N)
+Explanation
+WordDictionary wordDictionary = new WordDictionary();
+wordDictionary.addWord("bad");
+wordDictionary.addWord("dad");
+wordDictionary.addWord("mad");
+wordDictionary.search("pad"); // return False
+wordDictionary.search("bad"); // return True
+wordDictionary.search(".ad"); // return True
+wordDictionary.search("b.."); // return True
+ 
 
 Constraints:
 
-1 <= N <= 105
-1 <= A[i] <= 109
-Array may contain duplicate elements.
+1 <= word.length <= 25
+word in addWord consists of lowercase English letters.
+word in search consist of '.' or lowercase English letters.
+There will be at most 3 dots in word for search queries.
+At most 104 calls will be made to addWord and search.
 
 */
 
@@ -46,75 +46,40 @@ Array may contain duplicate elements.
 #include<vector>
 using namespace std;
 
-/*{ Driver Code Starts
-
-
-
-class Array
-{
+class WordDictionary {
 public:
-    template <class T>
-    static void input(vector<T> &A,int n)
-    {
-        for (int i = 0; i < n; i++)
-        {
-            scanf("%d ",&A[i]);
-        }
+    vector<string> v;
+    WordDictionary() {
     }
-
-    template <class T>
-    static void print(vector<T> &A)
-    {
-        for (int i = 0; i < A.size(); i++)
-        {
-            cout << A[i] << " ";
-        }
-        cout << endl;
+    
+    void addWord(string word) {
+        v.push_back(word);
     }
-};
-
-
-// } Driver Code Ends
-class Solution {
-  public:
-    vector<int> getDistinctDifference(int n, vector<int> &arr) {
-        vector<int> result(n);        
-        unordered_set<int> s;
-        for(int i =0; i<n; i++){
-            result[i] = s.size();;
-            s.insert(arr[i]);
+    
+    bool search(string word) {
+        int cnt = 0;
+        int n = word.size();
+        for(int j=0; j<v.size(); j++){
+            if(v[j].size() == n){
+                for(int i=0; i<n; i++){
+                    if(v[j][i] == word[i] || word[i] == '.'){
+                        cnt++;
+                    }
+                    else{
+                        cnt = 0;
+                        break;
+                    }
+                }
+                if(cnt == n) return true;
+            }
         }
-        s.clear();
-        for(int i = n-1; i>=0; i--){
-            result[i] -=s.size();
-            s.insert(arr[i]);
-        }
-        return result;
+        return false;
     }
 };
 
-
-//{ Driver Code Starts.
-
-int main(){
-    int t;
-    scanf("%d ",&t);
-    while(t--){
-        
-        int N;
-        scanf("%d",&N);
-        
-        
-        vector<int> A(N);
-        Array::input(A,N);
-        
-        Solution obj;
-        vector<int> res = obj.getDistinctDifference(N, A);
-        
-        Array::print(res);
-        
-    }
-}
-
-// }
-*/ 
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary* obj = new WordDictionary();
+ * obj->addWord(word);
+ * bool param_2 = obj->search(word);
+ */
