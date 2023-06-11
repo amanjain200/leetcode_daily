@@ -1,64 +1,80 @@
 /*
-Arranging the array
-MediumAccuracy: 37.41%Submissions: 45K+Points: 4
-Getting a High Paying Job Now Easier Than Today's Problem! Apply For Mega Job-A-Thon  
+1146. Snapshot Array
+Medium
+2.7K
+357
+Companies
 
-You are given an array of size N. Rearrange the given array in-place such that all the negative numbers occur before all non-nagative numbers.(Maintain the order of all -ve and non-negative numbers as given in the original array).
+Implement a SnapshotArray that supports the following interface:
+
+    SnapshotArray(int length) initializes an array-like data structure with the given length. Initially, each element equals 0.
+    void set(index, val) sets the element at the given index to be equal to val.
+    int snap() takes a snapshot of the array and returns the snap_id: the total number of times we called snap() minus 1.
+    int get(index, snap_id) returns the value at the given index, at the time we took the snapshot with the given snap_id
+
+ 
+
 Example 1:
 
-Input:
-N = 4
-Arr[] = {-3, 3, -2, 2}
-Output:
--3 -2 3 2
-Explanation:
-In the given array, negative numbers
-are -3, -2 and non-negative numbers are 3, 2. 
+Input: ["SnapshotArray","set","snap","set","get"]
+[[3],[0,5],[],[0,6],[0,0]]
+Output: [null,null,0,null,5]
+Explanation: 
+SnapshotArray snapshotArr = new SnapshotArray(3); // set the length to be 3
+snapshotArr.set(0,5);  // Set array[0] = 5
+snapshotArr.snap();  // Take a snapshot, return snap_id = 0
+snapshotArr.set(0,6);
+snapshotArr.get(0,0);  // Get the value of array[0] with snap_id = 0, return 5
 
-Example 1:
-
-Input:
-N = 4
-Arr[] = {-3, 1, 0, -2}
-Output:
--3 -2 1 0
-Explanation:
-In the given array, negative numbers
-are -3, -2 and non-negative numbers are 1, 0.
-
-Your Task:  
-You don't need to read input or print anything. Your task is to complete the function Rearrange() which takes the array Arr[] and its size N as inputs and returns the array after rearranging with spaces between the elements of the array.
-Expected Time Complexity: O(N. Log(N))
-Expected Auxiliary Space: O(Log(N))
+ 
 
 Constraints:
-1 ≤ N ≤ 105
--109 ≤ Elements of array ≤ 109
+
+    1 <= length <= 5 * 104
+    0 <= index < length
+    0 <= val <= 109
+    0 <= snap_id < (the total number of times we call snap())
+    At most 5 * 104 calls will be made to set, snap, and get.
+
+
 */
 
 /*
-class Solution
-{
-    public:
-        void Rearrange(int arr[], int n)
-        {
-            vector<int> pos;
-            vector<int> neg;
-            for(int i=0; i<n; i++){
-                if(arr[i]<0) neg.push_back(arr[i]);
-                else pos.push_back(arr[i]);
-            }
-            int ind = 0;
-            for(auto it : neg){
-                arr[ind] = it;
-                ind++;
-            }
-            for(auto it : pos){
-                arr[ind] = it;
-                ind++;
-            }
-            
+class SnapshotArray {
+public:
+    //snap will store {index, val} corresponding to a index
+    map<int, map<int,int>> snaps;
+    int snap_id = 0;
+    SnapshotArray(int length) {
+        for(int i=0; i<length; i++){
+            map<int, int> mp;
+            mp[0] = 0;
+            snaps[i] = mp;
         }
+    }
+    
+    void set(int index, int val) {
+        snaps[index][snap_id] = val;
+    }
+    
+    int snap() {
+        snap_id++;
+        return snap_id - 1;
+    }
+    
+    int get(int index, int snap_id) {
+        auto it = snaps[index].upper_bound(snap_id);
+        it--;
+        return it->second;
+    }
 };
+
+/**
+ * Your SnapshotArray object will be instantiated and called as such:
+ * SnapshotArray* obj = new SnapshotArray(length);
+ * obj->set(index,val);
+ * int param_2 = obj->snap();
+ * int param_3 = obj->get(index,snap_id);
+ 
 
 */
